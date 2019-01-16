@@ -1,0 +1,15 @@
+{
+  "attachments":[
+    {
+      "fallback":"fallback",
+      "pretext":"attachments",
+      "color":"#D00001",
+      "fields":[
+        {
+          "title":"this is test",
+          "value":"Hello World!"
+        }
+      ]
+    }
+  ]
+} 
