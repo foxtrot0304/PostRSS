@@ -1,18 +1,16 @@
 #!/usr/bin/env ruby
 
 require 'rss'
-#require 'feed-normalizer'
+require 'feed-normalizer'
+require 'open-uri'
 
 blogs = [
-  "http://foxtrot0304.hatenablog.com/rss"
+  "http://foxtrot0304.hatenablog.com/rss",
 ]
+
 blogs.each do |url|
-  rss = RSS::Parser.parse(url)
-  puts rss.channel.title
-  puts rss.channel.link
-  rss.channel.items.each do |a|
-    puts a.pubDate
-    puts a.title
-    break
-  end
+  atom = FeedNormalizer::FeedNormalizer.parse(open(url))
+  puts atom.entries.first.title
+  puts atom.entries.first.url
+  puts atom.last_updated
 end
