@@ -9,6 +9,8 @@ require 'rss'
 require 'feed-normalizer'
 require 'open-uri'
 
+require 'date'
+
 
 def load_blogs
   File.read("blog.txt")
@@ -16,6 +18,16 @@ end
 
 def load_url
   YAML.load_file("url.yaml")
+end
+
+def check_date?(last_updated)
+  day = Date.today
+  before_3day = day.prev_day(3)
+  if last_updated.to_date > before_3day
+    true;
+  else
+    false;
+  end
 end
 
 def load_post_param(title,url,last_updated)
@@ -52,5 +64,5 @@ load_blogs.each_line do |url|
   atom = FeedNormalizer::FeedNormalizer.parse(open(url.chomp))
   req.body = load_post_param(atom.entries.first.title,atom.entries.first.url,atom.last_updated)
   req["Content-Length"] = req.body.length.to_s
-  result = http.request(req)
+  result = http.request(req) if check_date?(atom.last_updated)
 end
